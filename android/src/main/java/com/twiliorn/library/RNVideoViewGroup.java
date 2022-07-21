@@ -8,6 +8,8 @@ package com.twiliorn.library;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.StringDef;
@@ -75,6 +77,13 @@ public class RNVideoViewGroup extends ViewGroup {
                             event.putInt("rotation", rotation);
                             pushEvent(RNVideoViewGroup.this, ON_FRAME_DIMENSIONS_CHANGED, event);
                         }
+                        new Handler(Looper.getMainLooper()).post(new Runnable(){
+                            @Override
+                            public void run() {
+                                RNVideoViewGroup me = RNVideoViewGroup.this;
+                                me.onLayout(true, me.getLeft(), me.getTop(), me.getRight(), me.getBottom());
+                            }
+                        });
                     }
                 }
         );
